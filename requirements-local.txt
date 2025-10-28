@@ -1,0 +1,21 @@
+# ============================================================================
+# ADDITIONAL REQUIREMENTS FOR LOCAL AI (Ollama + Coqui TTS)
+# Install these ONLY if using local providers for testing
+# ============================================================================
+
+# Text-to-Speech (Coqui TTS)
+TTS==0.22.0
+
+# Flask for TTS server
+flask==3.0.0
+flask-cors==4.0.0
+
+# Audio processing
+pydub==0.25.1
+soundfile==0.12.1
+
+# Additional utilities
+numpy==1.22.0  # Required by TTS
+
+# NOTE: You don't need these if using OpenAI provider only
+# They are ONLY needed for local testing with Coqui TTS
