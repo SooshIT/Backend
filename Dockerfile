@@ -37,5 +37,5 @@ ENV HOST=0.0.0.0
 # Expose the port
 EXPOSE 8000
 
-# Start the application
-CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start the application (use shell form to expand $PORT)
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}
