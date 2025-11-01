@@ -1,8 +1,8 @@
-FROM python:3.10-slim
+FROM python:3.10-slim AS builder
 
 WORKDIR /app
 
-# Install system dependencies and ensure pip is available
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
@@ -20,14 +20,18 @@ RUN apt-get update && apt-get install -y \
 # Upgrade pip and install build tools
 RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel
 
-# Install Python dependencies in smaller batches to avoid memory issues
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt \
-    --no-deps \
-    && pip install --no-cache-dir -r requirements.txt
+# Copy requirements files
+COPY requirements-core.txt requirements-extra.txt ./
 
-# Copy application code
+# Install core dependencies first
+RUN pip install --no-cache-dir -r requirements-core.txt
+
+# Install extra dependencies
+RUN pip install --no-cache-dir -r requirements-extra.txt
+
+# Copy application code and verify installation
 COPY . .
+RUN python -c "import fastapi; import uvicorn; import sqlalchemy; print('Dependencies verified successfully!')"
 
 # Set environment variables
 ENV PORT=8000
