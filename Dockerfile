@@ -21,13 +21,10 @@ RUN apt-get update && apt-get install -y \
 RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel
 
 # Copy requirements files
-COPY requirements-core.txt requirements-extra.txt ./
+COPY requirements-production.txt ./
 
-# Install core dependencies first
-RUN pip install --no-cache-dir -r requirements-core.txt
-
-# Install extra dependencies
-RUN pip install --no-cache-dir -r requirements-extra.txt
+# Install production dependencies (no TTS - using OpenAI instead)
+RUN pip install --no-cache-dir -r requirements-production.txt
 
 # Copy application code and verify installation
 COPY . .
