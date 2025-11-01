@@ -1,0 +1,102 @@
+# ============================================================================
+# SOOSH BACKEND - Python Dependencies
+# ============================================================================
+
+# Core Framework
+fastapi==0.115.0
+uvicorn[standard]==0.32.1
+pydantic==2.10.4
+pydantic-settings==2.7.0
+
+# Database
+psycopg2-binary==2.9.10
+asyncpg==0.30.0
+sqlalchemy==2.0.36
+alembic==1.14.0
+pgvector==0.3.6
+
+# Authentication & Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.20
+pyjwt==2.10.1
+bcrypt==4.2.1
+
+# OAuth2 Providers
+google-auth==2.37.0
+google-auth-oauthlib==1.2.1
+authlib==1.4.0
+
+# AI & ML
+openai==1.58.1
+sentence-transformers==3.3.1
+langchain==0.3.13
+langchain-openai==0.2.14
+numpy==1.26.4
+scikit-learn==1.6.1
+
+# Vector Search
+faiss-cpu==1.9.0  # Alternative to pgvector for hybrid search
+
+# Redis (for caching & background tasks)
+redis==5.2.1
+celery==5.4.0
+celery[redis]==5.4.0
+
+# WebSocket & Real-time
+python-socketio==5.12.1
+websockets==14.1
+
+# Payment Integrations
+stripe==11.3.0
+
+# File Handling & Storage
+python-magic==0.4.27
+boto3==1.35.95  # AWS S3 for file storage
+pillow==11.0.0
+
+# Geolocation
+geopy==2.4.1
+
+# Utilities
+python-dateutil==2.9.0.post0
+pytz==2024.2
+phonenumbers==8.13.52
+email-validator==2.2.0
+
+# HTTP & Networking
+httpx==0.28.1
+aiohttp==3.11.11
+
+# Logging & Monitoring
+loguru==0.7.3
+sentry-sdk==2.19.2
+
+# Testing
+pytest==8.3.4
+pytest-asyncio==0.24.0
+pytest-cov==6.0.0
+httpx==0.28.1  # For testing FastAPI
+
+# Code Quality
+black==24.10.0
+flake8==7.1.1
+mypy==1.14.0
+isort==5.13.2
+
+# Environment
+python-dotenv==1.0.1
+
+# CORS
+flask-cors==4.0.0
+
+# Voice & Audio (for AI agent)
+pydub==0.25.1
+soundfile==0.12.1
+TTS==0.22.0  # Coqui TTS for local text-to-speech
+
+# Task Scheduling
+apscheduler==3.10.4
+
+# Data Validation
+validators==0.34.0
