@@ -32,11 +32,10 @@ async def lifespan(app: FastAPI):
     logger.info(f"Environment: {settings.ENVIRONMENT}")
     logger.info(f"Debug Mode: {settings.DEBUG}")
 
-    # Create database tables (in production, use Alembic migrations)
-    if settings.ENVIRONMENT == "development":
-        async with engine.begin() as conn:
-            # await conn.run_sync(Base.metadata.create_all)
-            logger.info("✅ Database connection established")
+    # Create database tables
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+        logger.info("✅ Database tables created successfully")
 
     yield
 
