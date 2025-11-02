@@ -14,16 +14,13 @@ engine = create_async_engine(
     settings.DATABASE_URL,
     echo=settings.DB_ECHO,
     pool_pre_ping=True,
-    pool_size=10,
-    max_overflow=20,
 )
 
 # Create async session factory
 AsyncSessionLocal = async_sessionmaker(
-    engine,
+    bind= engine,
     class_=AsyncSession,
     expire_on_commit=False,
-    autocommit=False,
     autoflush=False,
 )
 
