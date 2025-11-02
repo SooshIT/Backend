@@ -6,7 +6,7 @@ Loads environment variables and provides settings
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import List, Optional
 from functools import lru_cache
-
+import os
 
 class Settings(BaseSettings):
     """Application settings from environment variables"""
@@ -25,9 +25,11 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "development"
 
     # Server
-    HOST: str = "0.0.0.0"
-    PORT: int = 8000
-    WORKERS: int = 4
+    HOST: str = os.getenv("HOST", "0.0.0.0")
+    PORT: int = int(os.getenv("PORT", 8000))  # ✅ convert to int
+    DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"
+    WORKERS: int = int(os.getenv("WORKERS", 1))
+    ENVIRONMENT: str = os.getenv("ENVIRONMENT", "production")
 
     # Database
     DATABASE_URL: str
