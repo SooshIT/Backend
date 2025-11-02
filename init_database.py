@@ -4,8 +4,7 @@ Runs the complete database schema on startup
 """
 import asyncio
 import asyncpg
-from app.core.config import settings
-from loguru import logger
+import os
 
 
 async def init_database():
@@ -15,25 +14,31 @@ async def init_database():
         with open('complete_database_schema.sql', 'r') as f:
             schema_sql = f.read()
 
-        logger.info("📚 Connecting to database...")
+        print("📚 Connecting to database...")
+
+        # Get database URL from environment
+        db_url = os.getenv('DATABASE_URL', '')
 
         # Extract connection string without the +asyncpg part
-        db_url = settings.DATABASE_URL.replace('postgresql+asyncpg://', 'postgresql://')
+        if '+asyncpg://' in db_url:
+            db_url = db_url.replace('postgresql+asyncpg://', 'postgresql://')
+
+        print(f"📡 Database URL: {db_url[:30]}...")
 
         # Connect to database
         conn = await asyncpg.connect(db_url)
 
-        logger.info("🚀 Running database schema...")
+        print("🚀 Running database schema...")
 
         # Execute the schema
         await conn.execute(schema_sql)
 
-        logger.info("✅ Database schema initialized successfully!")
+        print("✅ Database schema initialized successfully!")
 
         await conn.close()
 
     except Exception as e:
-        logger.error(f"❌ Database initialization failed: {str(e)}")
+        print(f"❌ Database initialization failed: {str(e)}")
         raise
 
 
