@@ -32,10 +32,39 @@ async def lifespan(app: FastAPI):
     logger.info(f"Environment: {settings.ENVIRONMENT}")
     logger.info(f"Debug Mode: {settings.DEBUG}")
 
-    # Create database tables
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-        logger.info("✅ Database tables created successfully")
+    # Initialize database with complete schema
+    try:
+        import asyncpg
+        import os
+
+        # Read the SQL schema file
+        sql_file = 'complete_database_schema.sql'
+        if os.path.exists(sql_file):
+            with open(sql_file, 'r') as f:
+                schema_sql = f.read()
+
+            # Get database URL
+            db_url = settings.DATABASE_URL.replace('postgresql+asyncpg://', 'postgresql://')
+
+            # Connect and execute schema
+            conn = await asyncpg.connect(db_url)
+            await conn.execute(schema_sql)
+            await conn.close()
+            logger.info("✅ Database schema initialized successfully!")
+        else:
+            # Fallback to SQLAlchemy method
+            async with engine.begin() as conn:
+                await conn.run_sync(Base.metadata.create_all)
+            logger.info("✅ Database tables created with SQLAlchemy")
+    except Exception as e:
+        logger.warning(f"⚠️ Database initialization warning: {str(e)}")
+        # Try fallback
+        try:
+            async with engine.begin() as conn:
+                await conn.run_sync(Base.metadata.create_all)
+            logger.info("✅ Database tables created with SQLAlchemy fallback")
+        except Exception as e2:
+            logger.error(f"❌ Database initialization failed: {str(e2)}")
 
     yield
 
